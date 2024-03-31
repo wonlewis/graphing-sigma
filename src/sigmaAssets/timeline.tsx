@@ -66,7 +66,7 @@ export const TimelineControl: React.FC<SearchControlProps> = ({
     const [selected, setSelected] = useState<string | null>(null);
     // random id for the input
     const [inputId, setInputId] = useState<string>("");
-    const [edges, setEdges] = useState<Array<{ id: string; timestamp: Date; hidden: boolean }>>([]);
+    const [, setEdges] = useState<Array<{ id: string; timestamp: Date; hidden: boolean }>>([]);
 
     /**
      * When component mount, we set a random input id.
