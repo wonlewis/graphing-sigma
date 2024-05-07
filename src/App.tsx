@@ -3,7 +3,6 @@ import "@react-sigma/core/lib/react-sigma.min.css";
 import {MultiDirectedTimeGraphView} from "./sigmaAssets/sigma_time_graph.tsx";
 import {Gantt, Task } from 'gantt-task-react';
 import "gantt-task-react/dist/index.css";
-import {TooltipProps} from "gantt-task-react/dist/components/other/tooltip";
 
 function App() {
     const tasks: Task[] = [

@@ -95,15 +95,15 @@ export const TimelineControl: React.FC<SearchControlProps> = ({
             console.log("The datetime is,", new Date(search));
             console.log("The timestamp is:", data.timestamp);
             console.log("equality:", data.timestamp.getTime() === new Date(search).getTime());
-            if (data.timestamp.getTime() == new Date(search).getTime()) {
-                return {
-                    ...data,
-                    hidden: false
-                }
-            }
+            // if (data.timestamp.getTime() == new Date(search).getTime()) {
+            //     return {
+            //         ...data,
+            //         hidden: false
+            //     }
+            // }
             return {
                 ...data,
-                hidden: true
+                hidden: false
             }
         })
         if (!selected && search.length > 1) {
@@ -115,6 +115,7 @@ export const TimelineControl: React.FC<SearchControlProps> = ({
         }
         setValues(newValues);
         setEdges(newEdges);
+        console.log("the graph is:", JSON.stringify(sigma.getGraph()))
     }, [search, selected, sigma]);
 
     /**

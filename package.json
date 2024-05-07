@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-sigma/core": "^3.4.2",
+    "@react-sigma/layout-forceatlas2": "^4.0.2",
     "gantt-task-react": "^0.3.9",
     "graphology": "^0.25.4",
     "graphology-types": "^0.24.7",
