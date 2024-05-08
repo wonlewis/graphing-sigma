@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from "react";
+import {FC, useEffect, useState, CSSProperties } from "react";
 import Graph, {MultiDirectedGraph} from "graphology";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import {
@@ -11,6 +11,7 @@ import {
 import "@react-sigma/core/lib/react-sigma.min.css";
 import {CustomFullScreen} from "./custom_fullscreen.tsx";
 import {TimelineControl} from "./timeline.tsx";
+import {useWorkerLayoutForceAtlas2} from "@react-sigma/layout-forceatlas2";
 
 type NodeAttributes = {
     x: number;
@@ -135,9 +136,25 @@ const MyGraph: FC = () => {
     return null;
 };
 
-export const MultiDirectedTimeGraphView: FC = () => {
+const Fa2: FC = () => {
+    const { start, kill } = useWorkerLayoutForceAtlas2({ settings: { slowDown: 10 } });
+
+    useEffect(() => {
+        // start FA2
+        start();
+
+        // Kill FA2 on unmount
+        return () => {
+            kill();
+        };
+    }, [start, kill]);
+
+    return null;
+};
+
+export const MultiDirectedTimeGraphView: FC<{ style: CSSProperties }> = ({ style }) => {
     return (
-        <SigmaContainer graph={MultiDirectedGraph}  style={{ height: "500px", width: "1200px" }} settings={sigmaSettings}>
+        <SigmaContainer graph={MultiDirectedGraph}  style={{...style, height: "500px"}} settings={sigmaSettings}>
             <ControlsContainer>
                 <TimelineControl/>
                 <ZoomControl/>
@@ -146,6 +163,7 @@ export const MultiDirectedTimeGraphView: FC = () => {
                     <CustomFullScreen/>
                 </FullScreenControl>
                 <MyGraph />
+                <Fa2 />
             </ControlsContainer>
         </SigmaContainer>
     );
