@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@elastic/eui": "^27.0.0",
     "@react-sigma/core": "^4.0.2",
     "@react-sigma/layout-forceatlas2": "^4.0.2",
     "@sigma/node-image": "^3.0.0-beta.9",
