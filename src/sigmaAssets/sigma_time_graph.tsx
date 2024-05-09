@@ -11,7 +11,8 @@ import {
 import "@react-sigma/core/lib/react-sigma.min.css";
 import {CustomFullScreen} from "./custom_fullscreen.tsx";
 import {TimelineControl} from "./timeline.tsx";
-import {useWorkerLayoutForceAtlas2} from "@react-sigma/layout-forceatlas2";
+import {LayoutForceAtlas2Control} from "@react-sigma/layout-forceatlas2";
+import { NodeImageProgram } from "@sigma/node-image";
 
 type NodeAttributes = {
     x: number;
@@ -19,6 +20,8 @@ type NodeAttributes = {
     size: number;
     label: string;
     color: string;
+    type: string;
+    image: string;
 }
 
 type EdgeAttributes = {
@@ -37,7 +40,13 @@ type GraphAttributes = {
     name?: string;
 }
 
-const sigmaSettings = { allowInvalidContainer: true };
+const sigmaSettings = {
+    allowInvalidContainer: true,
+    defaultNodeType: "image",
+    nodeProgramClasses: {
+        image: NodeImageProgram,
+    },
+};
 
 const MyGraph: FC = () => {
     const loadGraph = useLoadGraph();
@@ -45,9 +54,9 @@ const MyGraph: FC = () => {
     useEffect(() => {
         // Create the graph
         const graph: Graph<NodeAttributes, EdgeAttributes, GraphAttributes> = new Graph({multi: true, type: "directed"});
-        graph.addNode("1", {x: 0, y: 0, size: 10, label: "object1", color: "red"})
-        graph.addNode("2", {x: 0.1, y: 0.1, size: 10,  label: "object2", color: "blue"})
-        graph.addNode("3", {x: 0.3, y: -0.1, size: 10,  label: "object3", color: "green"})
+        graph.addNode("1", {x: 0, y: 0, size: 10, label: "object1", color: "red", type: "image", image: "https://play-lh.googleusercontent.com/1-hPxafOxdYpYZEOKzNIkSP43HXCNftVJVttoo4ucl7rsMASXW3Xr6GlXURCubE1tA=w3840-h2160-rw"})
+        graph.addNode("2", {x: 0.1, y: 0.1, size: 10,  label: "object2", color: "blue", type: "image", image: "https://play-lh.googleusercontent.com/1-hPxafOxdYpYZEOKzNIkSP43HXCNftVJVttoo4ucl7rsMASXW3Xr6GlXURCubE1tA=w3840-h2160-rw"})
+        graph.addNode("3", {x: 0.3, y: -0.1, size: 10,  label: "object3", color: "green", type: "image", image: "https://play-lh.googleusercontent.com/1-hPxafOxdYpYZEOKzNIkSP43HXCNftVJVttoo4ucl7rsMASXW3Xr6GlXURCubE1tA=w3840-h2160-rw"})
         graph.addDirectedEdge("1", "2", {hidden: false, size: 4, forceLabel: true, color: "red", label: "great connection", type: "arrow", doc_count: 1, duration: 10, timestamp: new Date('2015-01-01T12:10:30Z')})
         graph.addDirectedEdge("2", "3", {hidden: false, size: 4, forceLabel: true, color: "blue", label: "bad connection", type: "arrow", doc_count: 1, duration: 20, timestamp:  new Date('2015-01-02T12:10:30Z')})
         graph.addDirectedEdge("3", "1", {hidden: false, size: 4, forceLabel: true, color: "green", label: "neutral connection", type: "arrow", doc_count: 1, duration: 15, timestamp:  new Date('2015-01-03T12:10:30Z')})
@@ -136,22 +145,6 @@ const MyGraph: FC = () => {
     return null;
 };
 
-const Fa2: FC = () => {
-    const { start, kill } = useWorkerLayoutForceAtlas2({ settings: { slowDown: 10 } });
-
-    useEffect(() => {
-        // start FA2
-        start();
-
-        // Kill FA2 on unmount
-        return () => {
-            kill();
-        };
-    }, [start, kill]);
-
-    return null;
-};
-
 export const MultiDirectedTimeGraphView: FC<{ style: CSSProperties }> = ({ style }) => {
     return (
         <SigmaContainer graph={MultiDirectedGraph}  style={{...style, height: "500px"}} settings={sigmaSettings}>
@@ -163,7 +156,7 @@ export const MultiDirectedTimeGraphView: FC<{ style: CSSProperties }> = ({ style
                     <CustomFullScreen/>
                 </FullScreenControl>
                 <MyGraph />
-                <Fa2 />
+                <LayoutForceAtlas2Control settings={{ settings: { slowDown: 10 } }} />
             </ControlsContainer>
         </SigmaContainer>
     );
